@@ -150,12 +150,44 @@
 
 ### 3/24
 1. 垂直居中的方法
-> 某一个元素居中
+   > 子元素是块元素
+   1. 父元素：display:table-cell;vertical-align:middle；子元素：margin:auto
+   2. 父元素相对定位，子元素绝对定位（transform，-margin，margin：auto 0）
+   > 子元素是行内元素
+   1. 父元素行高和高度保持一致
+   2. 父元素上下等大小的padding，父元素无法设定高度
+   3. 子元素（浮动也可）相对定位，再设置垂直居中
+   > 皆可
+   1. 父元素设为弹性盒
+   > 某一个元素居中
+   1. 父元素align-items：flex-start，子元素align-self：center
 2. this指向
-> 函数和class中this的区别
+   > 函数和class中this的区别
+   > class函数和普通构造函数的区别
+    1. class函数只能通过new调用，没有new会报错
+    2. class内部定义的方法都是不可枚举的，Object.keys中不会遍历这些属性
+    3. class内部默认严格模式
+    4. class不存在变量提升：必须保证子类在父类之后定义
+    5. Son.__proto__=Father
+
 3. var a=b={x:1};a.x=a={x:1}
+
+    ``` 
+    var a=b={x:1} //a和b同时赋值到堆内存中A{x:1}
+    a.x=a={x:1} //.操作符优先级大于=，且等号执行顺序从右向走，所以先执行a.x，即A.x。然后a重新赋值给另一个B{x:1}。再执行A.x=a得到A{x:{x:1}}
+    ```
+
 4. 找出一个字符串中不重复的最长子串
 5. Hooks解决什么问题，useEffect，哪个钩子能保证依赖更新，但是本身不更新
+    > 能在不使用class组件时使用state、生命周期等，使用一些钩子函数引入外部功能，使用use开头
+    > class组件的问题
+    1. 需要使用super(this)
+    2. this指向问题
+    3. 生命周期分散相关的逻辑
+    4. 不能很好的支持非可视逻辑的共享。之前可以使用高阶组件封装部分逻辑，但会导致“封装地狱”。
+    标志：<strong>React中不会再存在无状态组件，只有类组件和函数组件的概念</strong>。
+
 6. 使用hooks解决竞态请求（标志位）
+    [通过 React Hooks 和闭包来解决请求竞态问题](https://tickrain.com/archives/347)
 7. websocket请求怎么建立的，丢包怎么处理
-8. 微前端
+8. 微前端    
