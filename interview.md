@@ -230,6 +230,15 @@ Promise 是一个构造函数，接受一个函数作为参数，并且传入 re
     3. 生命周期分散相关的逻辑
     4. 不能很好的支持非可视逻辑的共享。之前可以使用高阶组件封装部分逻辑，但会导致“封装地狱”。
 
+> 函数组件每一次渲染都有它自己的props和state。每一次渲染都有自己的事件处理函数，如果是延迟回调要考虑回调函数中捕获的props和state是否是最新的。Effects中某些异步回调执行时，及时页面已经重新渲染很多次了，但是异步回到中捕获的state和props仍然是产生这些effects的那次渲染组件中的state和props。
+
+> useRef可用来存放可变数据，组件多次渲染时，引用地址不会。存储的值变化时，不会引起组件渲染。在react hook中类似于this一样的变量，可以保存任何东西。
+> createRef每次渲染都会返回一个新引用，useRef每次都会返回相同的引用。
+
+#### 解决闭包
+1. 减少函数内部对外部变量的依赖，如使用useEffect中使用函数代替值替换
+2. 使用可变数据代替不可变数据：对于非函数类型，使用useRef代替useState；对于函数类型，可通过useRef保持函数引用地址不变，在useCallback中自动捕获最新的值。
+
 ### 6. 使用 hooks 解决竞态请求（标志位）
 
     [通过 React Hooks 和闭包来解决请求竞态问题](https://tickrain.com/archives/347)
@@ -309,7 +318,8 @@ Promise 是一个构造函数，接受一个函数作为参数，并且传入 re
 
 #### setState 是否同步更新
 
-    由React控制的事件处理过程setState不会同步更新this.state，一般组件中的绑定方法都经过React包装，所以都是以异步的方式执行；在React控制之外的情况，如果直接绑定DOM、定时器事件中，setState会同步更新this.state
+    由React控制的事件处理过程setState不会同步更新this.state，一般组件中的绑定方法都经过React包装，所以都是以异步的方式执行；
+    在React控制之外的情况（脱离React的上下文时），如果直接绑定DOM、定时器事件中，setState会同步更新this.state
 
 ### 2.react 中 hooks 的作用
 
@@ -332,6 +342,8 @@ React 函数组件引入副作用的解决方案。函数组件的主体只用�
 effect 可选的清除机制。
 React 会在组件卸载的时候执行清除操作。
 effect 会在每次执行前对上一个 effect 进行清除。
+
+> useEffect包裹的函数执行脱离了函数组件本身的执行上下文，所以不会对函数组件本身的执行造成影响。
 
 ### 5.HTML 的渲染过程
 
