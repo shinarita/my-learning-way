@@ -7,3 +7,4 @@
 1. Promise构造函数使用一个执行器函数来初始化一个promise实例。
 2. 执行器函数作用：初始化Promise的异步行为，控制状态的最终转换。执行器函数有两个参数，resolve和reject。调用resolve把状态切换为resolved，调用reject把状态切换为rejected。
 3. 执行器函数是同步执行的。
+4. 链式调用：每个then、catch、finally方法都会返回一个promise实例
